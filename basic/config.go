@@ -74,6 +74,9 @@ func Init() {
 	config.Get(defaultRootPath, "consul").Scan(&consulConfig)
 	config.Get(defaultRootPath, "mysql").Scan(&mysqlConfig)
 
+	//log.Logf("consulConfig %v \n", consulConfig)
+	//log.Logf("mysqlConfig %v \n", mysqlConfig)
+
 	// 标记已经初始化
 	inited = true
 }
