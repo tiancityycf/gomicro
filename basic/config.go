@@ -87,11 +87,3 @@ type defaultConsulConfig struct {
 	Host    string `json:"host"`
 	Port    int    `json:"port"`
 }
-
-// defaultMysqlConfig mysql 配置
-type defaultMysqlConfig struct {
-	URL               string `json:"url"`
-	Enable            bool   `json:"enabled"`
-	MaxIdleConnection int    `json:"maxIdleConnection"`
-	MaxOpenConnection int    `json:"maxOpenConnection"`
-}
