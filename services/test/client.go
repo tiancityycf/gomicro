@@ -16,12 +16,12 @@ func main() {
 	user := proto.NewUserService("user", service.Client())
 
 	// 调用user.Info
-	rsp, err := user.Info(context.TODO(), &proto.UserRequest{Name: "John"})
+	rsp, err := user.GetProfileById(context.TODO(), &proto.UserRequest{Name: "John"})
 	if err != nil {
 		fmt.Println(err)
 		panic(err)
 	}
 
 	// 打印响应请求
-	fmt.Println(rsp.Code)
+	fmt.Println(rsp.User.Name)
 }

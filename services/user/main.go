@@ -5,18 +5,26 @@ import (
 	"fmt"
 	"github.com/micro/go-micro"
 	"github.com/micro/go-micro/server"
+	"gomicro/basic"
 	proto "gomicro/services/user/proto"
 	"time"
 )
 
 type User struct{}
 
-func (u *User) Info(ctx context.Context, req *proto.UserRequest, rsp *proto.UserResponse) error {
-	rsp.Code = "hello" + req.Name
+func (u *User) GetProfileById(ctx context.Context, req *proto.UserRequest, rsp *proto.UserResponse) error {
+	if req.Id == 0 {
+		rsp.Error = &proto.Error{Code: 404, Message: "user not exits"}
+		return nil
+	}
+	profile := proto.User{Id: req.Id, Name: "hello" + req.Name}
+	rsp.User = &profile
 	return nil
 }
 
 func main() {
+
+	basic.Init()
 	// 创建新的服务，这里可以传入其它选项。
 	service := micro.NewService(
 		micro.Name("user"),

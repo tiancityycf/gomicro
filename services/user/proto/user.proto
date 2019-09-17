@@ -1,13 +1,31 @@
 syntax = "proto3";
 
+package gomicro.srv.user;
+
 service User {
-	rpc Info(UserRequest) returns (UserResponse) {}
+	rpc GetProfileById(UserRequest) returns (UserResponse) {}
+}
+
+message user {
+	int32 id = 1;
+	string name = 2;
+	string pwd = 3;
+	uint64 createdTime = 4;
+	uint64 updatedTime = 5;
+}
+
+message Error {
+	int32 code = 1;
+	string message = 2;
 }
 
 message UserRequest {
-	string name = 1;
+	int32 id = 1;
+	string name = 2;
 }
 
 message UserResponse {
-	string code = 2;
+	bool success = 1;
+	Error error = 2;
+	user user = 3;
 }

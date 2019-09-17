@@ -2,13 +2,11 @@ package main
 
 import (
 	"encoding/json"
-	"log"
-	"strings"
-
 	"github.com/micro/go-micro"
 	api "github.com/micro/go-micro/api/proto"
 	"github.com/micro/go-micro/errors"
 	proto "gomicro/services/user/proto"
+	"log"
 
 	"context"
 )
@@ -17,16 +15,17 @@ type User struct {
 	Client proto.UserService
 }
 
-func (s *User) Info(ctx context.Context, req *api.Request, rsp *api.Response) error {
-	log.Print("Received User.Info API request")
+func (s *User) GetProfileById(ctx context.Context, req *api.Request, rsp *api.Response) error {
+	log.Print("Received User API request")
 
-	name, ok := req.Get["name"]
-	if !ok || len(name.Values) == 0 {
-		return errors.BadRequest("go.micro.api.greeter", "Name cannot be blank")
+	id, ok := req.Get["id"]
+	if !ok || len(id.Values) == 0 {
+		return errors.BadRequest("gomicro.user", "id cannot be blank")
 	}
 
-	response, err := s.Client.Info(ctx, &proto.UserRequest{
-		Name: strings.Join(name.Values, " "),
+	response, err := s.Client.GetProfileById(ctx, &proto.UserRequest{
+		//Id: strings.Join(id.Values, " "),
+		Id: 1,
 	})
 	if err != nil {
 		return err
@@ -34,7 +33,7 @@ func (s *User) Info(ctx context.Context, req *api.Request, rsp *api.Response) er
 
 	rsp.StatusCode = 200
 	b, _ := json.Marshal(map[string]string{
-		"message": response.Code,
+		"message": response.User.Name,
 	})
 	rsp.Body = string(b)
 
@@ -46,7 +45,6 @@ func main() {
 		micro.Name("gomicro.api.user"),
 	)
 
-	// parse command line flags
 	service.Init()
 
 	service.Server().Handle(
