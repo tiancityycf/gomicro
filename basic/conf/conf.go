@@ -1,4 +1,4 @@
-package basic
+package conf
 
 import (
 	"github.com/micro/go-micro/config"
@@ -15,9 +15,9 @@ var (
 	err                     error
 	defaultRootPath         = "app"
 	defaultConfigFilePrefix = "application-"
+	profiles                defaultProfiles
 	consulConfig            defaultConsulConfig
 	mysqlConfig             defaultMysqlConfig
-	profiles                defaultProfiles
 	m                       sync.RWMutex
 	inited                  bool
 	sp                      = string(filepath.Separator)
@@ -81,9 +81,93 @@ func Init() {
 	inited = true
 }
 
+// GetMysqlConfig 获取mysql配置
+func GetMysqlConfig() (ret MysqlConfig) {
+	return mysqlConfig
+}
+
+// GetConsulConfig 获取Consul配置
+func GetConsulConfig() (ret ConsulConfig) {
+	return consulConfig
+}
+
+// Profiles 属性配置文件
+type Profiles interface {
+	GetInclude() string
+}
+
+// defaultProfiles 属性配置文件
+type defaultProfiles struct {
+	Include string `json:"include"`
+}
+
+// Include 包含的配置文件
+// 名称前缀为"application-"，格式为yml，如："application-xxx.yml"
+// 多个文件名以逗号隔开，并省略掉前缀"application-"，如：dn, jpush, mysql
+func (p defaultProfiles) GetInclude() string {
+	return p.Include
+}
+
+type ConsulConfig interface {
+	GetHost() string
+	GetEnabled() bool
+	GetPort() int
+}
+
 // defaultConsulConfig 默认consul 配置
 type defaultConsulConfig struct {
 	Enabled bool   `json:"enabled"`
 	Host    string `json:"host"`
 	Port    int    `json:"port"`
+}
+
+// URL mysql 连接
+func (m defaultConsulConfig) GetHost() string {
+	return m.Host
+}
+
+// Enabled 激活
+func (m defaultConsulConfig) GetEnabled() bool {
+	return m.Enabled
+}
+
+// 闲置连接数
+func (m defaultConsulConfig) GetPort() int {
+	return m.Port
+}
+
+// MysqlConfig mysql 配置 接口
+type MysqlConfig interface {
+	GetURL() string
+	GetEnabled() bool
+	GetMaxIdleConnection() int
+	GetMaxOpenConnection() int
+}
+
+// defaultMysqlConfig mysql 配置
+type defaultMysqlConfig struct {
+	URL               string `json:"url"`
+	Enabled           bool   `json:"enabled"`
+	MaxIdleConnection int    `json:"maxIdleConnection"`
+	MaxOpenConnection int    `json:"maxOpenConnection"`
+}
+
+// URL mysql 连接
+func (m defaultMysqlConfig) GetURL() string {
+	return m.URL
+}
+
+// Enabled 激活
+func (m defaultMysqlConfig) GetEnabled() bool {
+	return m.Enabled
+}
+
+// 闲置连接数
+func (m defaultMysqlConfig) GetMaxIdleConnection() int {
+	return m.MaxIdleConnection
+}
+
+// 打开连接数
+func (m defaultMysqlConfig) GetMaxOpenConnection() int {
+	return m.MaxOpenConnection
 }
