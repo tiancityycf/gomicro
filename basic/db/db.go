@@ -2,6 +2,7 @@ package db
 
 import (
 	"database/sql"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/micro/go-micro/util/log"
 	"gomicro/basic/conf"
 	"sync"
@@ -43,7 +44,7 @@ func initMysql() {
 	// 创建连接
 	mysqlDB, err = sql.Open("mysql", conf.GetMysqlConfig().GetURL())
 	if err != nil {
-		log.Fatal(err)
+		//log.Fatal(err)
 		panic(err)
 	}
 
