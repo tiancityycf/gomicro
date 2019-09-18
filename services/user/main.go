@@ -6,21 +6,10 @@ import (
 	"github.com/micro/go-micro"
 	"github.com/micro/go-micro/server"
 	"gomicro/basic"
-	proto "gomicro/services/user/proto"
+	"gomicro/services/user/model"
+	pb "gomicro/services/user/proto"
 	"time"
 )
-
-type User struct{}
-
-func (u *User) GetProfileById(ctx context.Context, req *proto.UserRequest, rsp *proto.UserResponse) error {
-	if req.Id == 0 {
-		rsp.Error = &proto.Error{Code: 404, Message: "user not exits"}
-		return nil
-	}
-	profile := proto.User{Id: req.Id, Name: "hello" + req.Name}
-	rsp.User = &profile
-	return nil
-}
 
 func main() {
 
@@ -36,7 +25,7 @@ func main() {
 	service.Init()
 
 	// 注册处理器
-	proto.RegisterUserHandler(service.Server(), new(User))
+	pb.RegisterUserHandler(service.Server(), new(model.User))
 
 	// 运行服务
 	if err := service.Run(); err != nil {
@@ -47,7 +36,7 @@ func main() {
 // 实现server.HandlerWrapper接口
 func logWrapper(fn server.HandlerFunc) server.HandlerFunc {
 	return func(ctx context.Context, req server.Request, rsp interface{}) error {
-		fmt.Printf("[%v] server request: %s %s \n", time.Now(), req.Endpoint(), req.Body())
+		fmt.Printf("[%v] server request: %s %v \n", time.Now(), req.Endpoint(), req.Body())
 		return fn(ctx, req, rsp)
 	}
 }
@@ -64,7 +53,7 @@ func newFunction() {
 	fnc.Init()
 
 	// 注册handler
-	fnc.Handle(new(User))
+	fnc.Handle(new(model.User))
 
 	// 运行服务
 	fnc.Run()
