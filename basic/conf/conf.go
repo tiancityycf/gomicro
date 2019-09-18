@@ -50,7 +50,7 @@ func Init() {
 		panic(err)
 	}
 
-	log.Logf("[Init] 加载配置文件：path: %s, %+v\n", pt+sp+"application.yml", profiles)
+	//log.Logf("[Init] 加载配置文件：path: %s, %+v\n", pt+sp+"application.yml", profiles)
 
 	if len(profiles.GetInclude()) > 0 {
 		include := strings.Split(profiles.GetInclude(), ",")
@@ -59,7 +59,7 @@ func Init() {
 		for i := 0; i < len(include); i++ {
 			filePath := pt + string(filepath.Separator) + defaultConfigFilePrefix + strings.TrimSpace(include[i]) + ".yml"
 
-			log.Logf("[Init] 加载配置文件：path: %s\n", filePath)
+			//log.Logf("[Init] 加载配置文件：path: %s\n", filePath)
 
 			sources[i] = file.NewSource(file.WithPath(filePath))
 		}
