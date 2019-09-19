@@ -1,6 +1,6 @@
 app:
   mysql:
-    url: testgroup:testgroupM1@(rm-2zezj9n2lv83nl8x4o.mysql.rds.aliyuncs.com:3306)/makaplatv4?charset=utf8&parseTime=true
+    url: testgroup:testgroupM1@tcp(rm-2zezj9n2lv83nl8x4o.mysql.rds.aliyuncs.com:3306)/makaplatv4?charset=utf8&parseTime=true
     enabled: true
     maxIdleConnection: 10
     maxOpenConnection: 300
