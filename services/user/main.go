@@ -6,7 +6,7 @@ import (
 	"github.com/micro/go-micro"
 	"github.com/micro/go-micro/server"
 	"gomicro/basic"
-	"gomicro/services/user/model"
+	"gomicro/services/user/handler"
 	pb "gomicro/services/user/proto"
 	"time"
 )
@@ -25,7 +25,7 @@ func main() {
 	service.Init()
 
 	// 注册处理器
-	pb.RegisterUserHandler(service.Server(), new(model.User))
+	pb.RegisterUserHandler(service.Server(), new(handler.Service))
 
 	// 运行服务
 	if err := service.Run(); err != nil {
@@ -53,7 +53,7 @@ func newFunction() {
 	fnc.Init()
 
 	// 注册handler
-	fnc.Handle(new(model.User))
+	fnc.Handle(new(handler.Service))
 
 	// 运行服务
 	fnc.Run()
