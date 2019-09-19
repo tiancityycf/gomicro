@@ -93,7 +93,9 @@ message UserResponse {
 
 protoc --proto_path=. --micro_out=. --go_out=. ./services/user/user.proto
 
+#####    TODO
 
+*[ ] 参数不是合法ID时，没有明确提示错误 比如：{"id":"x"}
 #####   更多参考
 
 https://github.com/micro-in-cn/tutorials
