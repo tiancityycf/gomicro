@@ -10,7 +10,6 @@ import (
 type User struct{}
 
 func (u *User) GetProfileById(id int32) (*pb.User, error) {
-
 	var profile pb.User
 	queryString := `SELECT id, username as name  FROM platv4_user WHERE id = ?`
 	// 获取数据库
@@ -26,5 +25,4 @@ func (u *User) GetProfileById(id int32) (*pb.User, error) {
 		}
 	}
 	return nil, nil
-
 }
