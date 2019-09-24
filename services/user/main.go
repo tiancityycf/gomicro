@@ -4,8 +4,11 @@ import (
 	"context"
 	"fmt"
 	"github.com/micro/go-micro"
+	"github.com/micro/go-micro/registry"
+	"github.com/micro/go-micro/registry/consul"
 	"github.com/micro/go-micro/server"
 	"gomicro/basic"
+	"gomicro/basic/conf"
 	"gomicro/services/user/handler"
 	pb "gomicro/services/user/proto"
 	"time"
@@ -14,11 +17,14 @@ import (
 func main() {
 
 	basic.Init()
+	// 使用consul注册
+	micReg := consul.NewRegistry(registryOptions)
 	// 创建新的服务，这里可以传入其它选项。
 	service := micro.NewService(
 		micro.Name("user"),
 		micro.Version("1.0"),
 		micro.WrapHandler(logWrapper),
+		micro.Registry(micReg),
 	)
 
 	// 初始化方法会解析命令行标识
@@ -39,6 +45,12 @@ func logWrapper(fn server.HandlerFunc) server.HandlerFunc {
 		fmt.Printf("[%v] server request: %s %v \n", time.Now(), req.Endpoint(), req.Body())
 		return fn(ctx, req, rsp)
 	}
+}
+
+func registryOptions(ops *registry.Options) {
+	consulCfg := conf.GetConsulConfig()
+	ops.Timeout = time.Second * 5
+	ops.Addrs = []string{fmt.Sprintf("%s:%d", consulCfg.GetHost(), consulCfg.GetPort())}
 }
 
 //Go Micro包含了函数式编程模型。
