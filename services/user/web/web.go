@@ -38,6 +38,11 @@ func main() {
 				return
 			}
 
+			if rsp.User == nil {
+				http.Error(w, "user not exists", 404)
+				return
+			}
+
 			w.Write([]byte(`<html><body><h1>` + rsp.User.Name + `</h1></body></html>`))
 			return
 		}
