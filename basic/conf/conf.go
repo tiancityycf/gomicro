@@ -33,7 +33,6 @@ func Init() {
 		return
 	}
 
-	// 加载yml配置
 	// 先加载基础配置
 	appPath, _ := filepath.Abs(filepath.Dir(filepath.Join("."+sp, sp)))
 

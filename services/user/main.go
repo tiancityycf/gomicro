@@ -18,7 +18,9 @@ func main() {
 
 	basic.Init()
 	// 使用consul注册
+
 	micReg := consul.NewRegistry(registryOptions)
+
 	// 创建新的服务，这里可以传入其它选项。
 	service := micro.NewService(
 		micro.Name("user"),
