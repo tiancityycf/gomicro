@@ -18,6 +18,7 @@ var (
 	profiles                defaultProfiles
 	consulConfig            defaultConsulConfig
 	mysqlConfig             defaultMysqlConfig
+	redisConfig             defaultRedisConfig
 	m                       sync.RWMutex
 	inited                  bool
 	sp                      = string(filepath.Separator)
@@ -72,6 +73,7 @@ func Init() {
 	// 赋值
 	config.Get(defaultRootPath, "consul").Scan(&consulConfig)
 	config.Get(defaultRootPath, "mysql").Scan(&mysqlConfig)
+	config.Get(defaultRootPath, "redis").Scan(&redisConfig)
 
 	//log.Logf("consulConfig %v \n", consulConfig)
 	//log.Logf("mysqlConfig %v \n", mysqlConfig)
@@ -88,6 +90,11 @@ func GetMysqlConfig() (ret MysqlConfig) {
 // GetConsulConfig 获取Consul配置
 func GetConsulConfig() (ret ConsulConfig) {
 	return consulConfig
+}
+
+// GetRedisConfig 获取Consul配置
+func GetRedisConfig() (ret RedisConfig) {
+	return redisConfig
 }
 
 // Profiles 属性配置文件
