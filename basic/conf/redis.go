@@ -22,7 +22,7 @@ type defaultRedisConfig struct {
 	Enabled        bool                `json:"enabled"`
 	Password       string              `json:"password"`
 	DBNum          int                 `json:"db_num"`
-	SentinelConfig RedisSentinelConfig `json:"sentinel_config"`
+	SentinelConfig RedisSentinelConfig `json:"sentinel"`
 }
 
 func (m defaultRedisConfig) GetConn() string {
